@@ -11,7 +11,7 @@ public class AgRunner {
     public static void main(String[] args) throws Exception {
         int nPop = 20;
         int nQueens = 8;
-        int nGer = 1000;
+        int nGer = 5;
         int nElite = 4;
 
         IndividualFactory individualFactory = new IndividualNQueensFactory(nQueens);

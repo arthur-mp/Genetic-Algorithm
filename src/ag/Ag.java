@@ -66,7 +66,7 @@ public class Ag {
 
         }
 
-        return (popParents.get(0));
+        return (popParents.get(popParents.size() - 1));
     }
 
     private double calculateSumEvaluations(List<Individual> popJoin) {

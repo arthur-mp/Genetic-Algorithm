@@ -21,10 +21,10 @@ public abstract class Individual implements Comparable<Individual> {
 
     @Override
     public int compareTo(Individual individual) {
-        if (this.getEvaluation() < individual.getEvaluation()) {
+        if (this.getEvaluation() > individual.getEvaluation()) {
             return -1;
         } else {
-            if (this.getEvaluation() > individual.getEvaluation()) {
+            if (this.getEvaluation() < individual.getEvaluation()) {
                 return 1;
             } else {
                 return 0;
