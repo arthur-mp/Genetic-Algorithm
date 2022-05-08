@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import individuo.Individuo;
-import interfaces.IndividuoFactory;
+import individual.Individual;
+import interfaces.IndividualFactory;
 
 public class Ag {
 
     private double sumEvaluations;
 
-    public Individuo run(int nPop, IndividuoFactory indFactory, int nElite, int nGer) {
+    public Individual run(int nPop, IndividualFactory indFactory, int nElite, int nGer) {
 
-        List<Individuo> popParents = new ArrayList<>();
-        List<Individuo> popChildren;
-        List<Individuo> popMutant;
-        List<Individuo> popJoin;
+        List<Individual> popParents = new ArrayList<>();
+        List<Individual> popChildren;
+        List<Individual> popMutant;
+        List<Individual> popJoin;
 
-        List<Individuo> newPop;
+        List<Individual> newPop;
 
         // Gerar nPop Individuos inciais
         for (int i = 0; i < nPop; i++) {
-            Individuo individuo = indFactory.getIndividuo();
-            individuo.getAvaliacao();
-            popParents.add(individuo);
+            Individual individual = indFactory.getIndividual();
+            individual.getEvaluation();
+            popParents.add(individual);
         }
 
         for (int i = 0; i < nGer; i++) {
@@ -38,17 +38,17 @@ public class Ag {
 
             // Crossover
             for (int j = 0; j <= (nPop - 1); j += 2) {
-                Individuo parents1 = popParents.get(j);
-                Individuo parents2 = popParents.get(j + 1);
+                Individual parents1 = popParents.get(j);
+                Individual parents2 = popParents.get(j + 1);
 
-                List<Individuo> children = parents1.getChildren(parents2);
+                List<Individual> children = parents1.getChildren(parents2);
                 popChildren.addAll(children);
             }
 
             // Mutação
             for (int k = 0; k < popParents.size(); k++) {
-                Individuo parents1 = popParents.get(k);
-                Individuo mutant = parents1.getMutant();
+                Individual parents1 = popParents.get(k);
+                Individual mutant = parents1.getMutant();
                 popMutant.add(mutant);
             }
 
@@ -59,7 +59,7 @@ public class Ag {
 
             newPop.addAll(selection(popJoin, nPop, nElite));
 
-            Collections.sort((ArrayList<Individuo>) newPop);
+            Collections.sort((ArrayList<Individual>) newPop);
 
             popParents.clear();
             popParents.addAll(newPop);
@@ -69,16 +69,16 @@ public class Ag {
         return (popParents.get(0));
     }
 
-    private double calculateSumEvaluations(List<Individuo> popJoin) {
+    private double calculateSumEvaluations(List<Individual> popJoin) {
         this.sumEvaluations = 0;
         for (int i = 0; i < popJoin.size(); i++) {
-            this.sumEvaluations += popJoin.get(i).getAvaliacao();
+            this.sumEvaluations += popJoin.get(i).getEvaluation();
         }
 
         return this.sumEvaluations;
     }
 
-    private int roulette(List<Individuo> popJoin) {
+    private int roulette(List<Individual> popJoin) {
         int i;
         double aux = 0;
 
@@ -87,7 +87,7 @@ public class Ag {
         double limit = Math.random() * this.sumEvaluations;
 
         for (i = 0; ((i < popJoin.size()) && (aux < limit)); i++) {
-            aux += popJoin.get(i).getAvaliacao();
+            aux += popJoin.get(i).getEvaluation();
         }
 
         i--;
@@ -95,13 +95,11 @@ public class Ag {
         return i;
     }
 
-    private List<Individuo> selection(List<Individuo> popJoin, int nInd, int elitism) {
-        List<Individuo> newPop = new ArrayList<>();
-        List<Individuo> popAux = new ArrayList<>(popJoin);
+    private List<Individual> selection(List<Individual> popJoin, int nInd, int elitism) {
+        List<Individual> newPop = new ArrayList<>();
+        List<Individual> popAux = new ArrayList<>(popJoin);
         int index, lasIndividual;
 
-        // Ordenação decrescente de getAvaliacao,
-        // maior avaliação == pior é o fitness, ou seja, mais conflitos.
         Collections.sort(popAux);
 
         for (int i = 0; i < elitism; i++) {

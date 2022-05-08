@@ -1,35 +1,35 @@
-package individuo;
+package individual;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class IndividuoNRainhas extends Individuo {
+public class IndividualNQueens extends Individual {
 
     protected List<Integer> genes;
 
-    protected IndividuoNRainhas(int nRainhas) {
+    protected IndividualNQueens(int nQueens) {
         this.genes = new ArrayList<>();
         List<Integer> genesRandom = new ArrayList<>();
-        for (int i = 0; i < nRainhas; i++) {
+        for (int i = 0; i < nQueens; i++) {
             genesRandom.add(i + 1);
         }
-        for (int i = 0; i < nRainhas; i++) {
-            Random aleatorio = new Random();
-            int index = aleatorio.nextInt(genesRandom.size());
+        for (int i = 0; i < nQueens; i++) {
+            Random random = new Random();
+            int index = random.nextInt(genesRandom.size());
             int value = genesRandom.get(index);
             this.genes.add(value);
             genesRandom.remove(index);
         }
     }
 
-    protected IndividuoNRainhas(List<Integer> genes) {
+    protected IndividualNQueens(List<Integer> genes) {
         this.genes = genes;
     }
 
     @Override
-    public Double avaliar() {
+    public Double evaluate() {
         Double fitness = 0.0;
 
         for (int i = 0; i < (this.genes.size() - 1); i++) {
@@ -48,15 +48,15 @@ public class IndividuoNRainhas extends Individuo {
     }
 
     @Override
-    public List<Individuo> getChildren(Individuo individuo) {
-        IndividuoNRainhas individuoNRainha = (IndividuoNRainhas) individuo;
+    public List<Individual> getChildren(Individual individual) {
+        IndividualNQueens individualNQueen = (IndividualNQueens) individual;
         Random random = new Random();
 
         // Filhos resultantes do Crossover
-        List<Individuo> childrenCrossover = new ArrayList<>();
+        List<Individual> childrenCrossover = new ArrayList<>();
 
-        IndividuoNRainhas children1;
-        IndividuoNRainhas children2;
+        IndividualNQueens children1;
+        IndividualNQueens children2;
 
         List<Integer> genesChildren1 = new ArrayList<>();
         List<Integer> genesChildren2 = new ArrayList<>();
@@ -65,7 +65,7 @@ public class IndividuoNRainhas extends Individuo {
         int cut = random.nextInt(this.genes.size());
 
         List<Integer> cloneGenesParents1 = new ArrayList<>(this.genes);
-        List<Integer> cloneGenesParents2 = new ArrayList<>(individuoNRainha.genes);
+        List<Integer> cloneGenesParents2 = new ArrayList<>(individualNQueen.genes);
 
         List<Integer> initialPartGenesParents1 = new ArrayList<>(cloneGenesParents1.subList(0, cut));
         List<Integer> finalPartGenesParents1 = new ArrayList<>(
@@ -132,11 +132,11 @@ public class IndividuoNRainhas extends Individuo {
          * }
          */
 
-        children1 = new IndividuoNRainhas(genesChildren1);
-        children1.getAvaliacao();
+        children1 = new IndividualNQueens(genesChildren1);
+        children1.getEvaluation();
 
-        children2 = new IndividuoNRainhas(genesChildren2);
-        children2.getAvaliacao();
+        children2 = new IndividualNQueens(genesChildren2);
+        children2.getEvaluation();
 
         childrenCrossover.add(children1);
         childrenCrossover.add(children2);
@@ -145,10 +145,10 @@ public class IndividuoNRainhas extends Individuo {
     }
 
     @Override
-    public Individuo getMutant() {
+    public Individual getMutant() {
         Random random = new Random();
 
-        Individuo mutant;
+        Individual mutant;
 
         List<Integer> cloneGenesParents = new ArrayList<>(this.genes);
 
@@ -166,9 +166,9 @@ public class IndividuoNRainhas extends Individuo {
         cloneGenesParents.set(position1, gen2);
         cloneGenesParents.set(position2, gen1);
 
-        mutant = new IndividuoNRainhas(cloneGenesParents);
+        mutant = new IndividualNQueens(cloneGenesParents);
 
-        mutant.getAvaliacao();
+        mutant.getEvaluation();
 
         return mutant;
     }
