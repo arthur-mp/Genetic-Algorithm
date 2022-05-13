@@ -173,6 +173,11 @@ public class IndividualNQueens extends Individual {
         return mutant;
     }
 
+    @Override
+    public String toString() {
+        return this.genes.toString() + " " + this.evaluation.toString();
+    }
+
     public List<Integer> getGenes() {
         return this.genes;
     }

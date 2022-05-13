@@ -59,6 +59,10 @@ public class Ag {
 
             newPop.addAll(selection(popJoin, nPop, nElite));
 
+            Individual bestIndividual = newPop.get(0);
+
+            System.out.println("Geração: " + (i + 1) + " " + bestIndividual.toString());
+
             Collections.sort((ArrayList<Individual>) newPop);
 
             popParents.clear();
